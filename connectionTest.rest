@@ -1,0 +1,22 @@
+GET http://localhost:3003/api/blogs
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "BLogBlokBlog",
+    "author": "AntonAnton",
+    "url": "blog.fi/anton/blog",
+    "likes": 3
+}
+
+###
+
+DELETE http://localhost:3003/api/blogs/263050f5c0cd920ae8116591f
+
+###
+
+GET  http://localhost:3003/api/blogs/6321fef7f6543d6ca491d045
+###
+GET  http://localhost:3003/info
