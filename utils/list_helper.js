@@ -48,9 +48,9 @@ const mostBlogs = (blogs) => {
 	uniq.forEach(e => {
 		const author = { author: '', blogs: '' }
 		const authInst = Object.create(author)
-		authInst.author = e[0], authInst.blogs = e[1].length
+		authInst.author = e[0]
+		authInst.blogs = e[1].length
 		authorArr.push(authInst)
-		console.log(authorArr)
 	})
 	
 	const rangedList = _.orderBy(authorArr, ['blogs'], ['desc'])
@@ -59,9 +59,32 @@ const mostBlogs = (blogs) => {
 } 
 
 const mostLikes = (blogs) => {
+	const authorArr = []
+	const uniq = _.toPairs(_.groupBy(blogs, 'author'))
+
 	
-    
-	return 17
+  
+	uniq.forEach(e => {
+		const author = { author: '', likes: '' }
+		const authInst = Object.create(author)
+		const likesArr = []
+		console.log('checcking e: ', e)
+		e[1].forEach(e => {
+            
+			likesArr.push(e.likes)
+		}) 
+      
+		authInst.author = e[0]
+		authInst.likes = _.sum(likesArr)
+		authorArr.push(authInst)
+		
+		console.log('authorobject: ', authInst)
+		console.log('autharr: ', authorArr )
+		
+	}) 
+   
+	const rangedList = _.orderBy(authorArr, ['likes'], ['desc'])
+	return rangedList[0]
 }
 
 module.exports ={ 
