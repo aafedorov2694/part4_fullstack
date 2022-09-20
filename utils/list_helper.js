@@ -68,7 +68,6 @@ const mostLikes = (blogs) => {
 		const author = { author: '', likes: '' }
 		const authInst = Object.create(author)
 		const likesArr = []
-		console.log('checcking e: ', e)
 		e[1].forEach(e => {
             
 			likesArr.push(e.likes)
@@ -78,8 +77,6 @@ const mostLikes = (blogs) => {
 		authInst.likes = _.sum(likesArr)
 		authorArr.push(authInst)
 		
-		console.log('authorobject: ', authInst)
-		console.log('autharr: ', authorArr )
 		
 	}) 
    
