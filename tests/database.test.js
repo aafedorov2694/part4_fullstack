@@ -98,6 +98,45 @@ test('new blog can be added to the DB', async() => {
 
 })
 
+test('if likes property missing it has zero value in DB', async() => {
+	const testBlogNoLikes = {
+		title: 'BLogBlogBlog',
+		author: 'AntonAnton',
+		url: 'blog.fi/anton/blog',
+		
+	}
+
+	await api
+		.post('/api/blogs')
+		.send(testBlogNoLikes)
+		.expect(201)
+		.expect('Content-Type', /application\/json/)
+    
+	const response = await api.get('/api/blogs')
+	const likes = response.body.map(blogs => blogs.likes)
+	expect(response.body).toHaveLength(likes.length)
+
+})
+
+test('if url&title properties missing it returns 404', async() => {
+	const testBlogNoUrl = {
+		//title: 'BLogBlogBlog',
+		author: 'AntonAnton',
+		//url: 'blog.fi/anton/blog',
+		likes: 0
+	}
+
+	await api
+		.post('/api/blogs')
+		.send(testBlogNoUrl)
+		.expect(400)
+		.expect('Content-Type', /application\/json/)
+    
+	
+}, 100000)
+
+
+
 afterAll(() => {
 	mongoose.connection.close()
 })

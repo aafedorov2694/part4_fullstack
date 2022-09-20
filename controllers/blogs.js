@@ -29,13 +29,27 @@ blogRouter.get('/:id', (request, response) => {
         
 })
 
-blogRouter.post('/', (request, response) => {
-	const blog = new Blog(request.body)
-
+blogRouter.post('/', async (request, response) => {
+	
+	const body = request.body
+	let updatedbody = ''
+	if(body.likes === undefined){
+		body.likes = 0
+		updatedbody = body
+	} else (
+		updatedbody = request.body
+	)
+	
+	const blog = new Blog(updatedbody)
+	
 	blog
 		.save()
 		.then(result => {
-			response.status(201).json(result)
+			body.title === undefined && body.url === undefined
+				? response.status(400).send({ message: 'BadRequest' })
+				:
+				response.status(201).json(result)
+			console.log('result: ', result)
 		})
 })
 
