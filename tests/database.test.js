@@ -135,6 +135,26 @@ test('if url&title properties missing it returns 404', async() => {
 	
 }, 100000)
 
+test('deletion of the resource was successful', async() => {
+	await api
+		.delete('/api/blogs/5a422a851b54a676234d17f7')
+		.expect(200)
+	
+	const response =  await api.get('/api/blogs')
+	console.log('response from delete: ', response)
+	expect(response.body).toHaveLength(initialBlogs.length-1)
+})
+
+test('resource should be updated successfully', async() => {
+	const numberOfLikes = 755
+	await api
+		.put(`/api/blogs/5a422a851b54a676234d17f7?likes=${numberOfLikes}`)
+		.expect(204)
+    
+	const response = await api.get('/api/blogs/5a422a851b54a676234d17f7')
+	console.log('response: ', response.body)
+	expect(response.body.likes).toBe(numberOfLikes)
+})
 
 
 afterAll(() => {

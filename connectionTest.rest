@@ -13,10 +13,12 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3003/api/blogs/263050f5c0cd920ae8116591f
+DELETE http://localhost:3003/api/blogs/632200a729f8ed2de170ee49
 
 ###
 
 GET  http://localhost:3003/api/blogs/6322009c29f8ed2de170ee47
 ###
 GET  http://localhost:3003/info
+###
+PUT http://localhost:3003/api/blogs/63220159eec5e84525ed2a8f?likes=253

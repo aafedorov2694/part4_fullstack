@@ -2,6 +2,7 @@ const logger = require('../utils/logger')
 const Blog = require('../models/blog')
 const blogRouter = require('express').Router()
 const listHelper = require('../utils/list_helper')
+require('express-async-errors')
 
 
 blogRouter.get('/', (request, response) => {
@@ -51,6 +52,31 @@ blogRouter.post('/', async (request, response) => {
 				response.status(201).json(result)
 			console.log('result: ', result)
 		})
+})
+
+blogRouter.delete('/:id', async (request, response) => {
+	
+	const idToDelete = request.params.id
+	console.log('idTOdelete: ', idToDelete)
+	const blogToDelete =  await Blog.findByIdAndRemove(idToDelete)
+	if(blogToDelete){
+		response.status(200).end()
+		console.log('deleted')
+
+	}else{
+		response.status(404).send('smth went wrong')
+	}
+})
+
+blogRouter.put('/:id', async(request, response) => {
+	const id = request.params.id
+	const likes = request.query.likes
+
+	await Blog
+		.findByIdAndUpdate(id, { likes: likes })
+	response.status(204).end()
+		
+	
 })
 
 
