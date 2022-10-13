@@ -36,4 +36,23 @@ describe('when there is initially one user in db', () => {
 		const usernames = usersAtEnd.map(u => u.username)
 		expect(usernames).toContain(newUser.username)
 	})
+
+	test('user is not created with too short password and username', async() => {
+		const usersAtStart = await helper.usersInDb()
+
+		const newUser = {
+			username: 'ml',
+			name: 'Matti Luukkainen',
+			password: 'sa',
+		}
+
+		const response = await api.post('/api/users').send(newUser)
+			
+
+		const usersAtEnd = await helper.usersInDb()
+		expect(response.status).toBe(400)
+		expect(response.text).toContain('should be at least 3 characters long')
+		expect(usersAtEnd).toHaveLength(usersAtStart.length)
+
+	})
 })
