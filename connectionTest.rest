@@ -12,6 +12,16 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+	"username": "totosik",
+	"name": "Matti Luukkainen",
+	"password": "salainen"
+}
+
+###
 
 DELETE http://localhost:3003/api/blogs/632200a729f8ed2de170ee49
 
