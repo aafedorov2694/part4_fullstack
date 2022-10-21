@@ -2,6 +2,7 @@ const logger = require('../utils/logger')
 const Blog = require('../models/blog')
 const blogRouter = require('express').Router()
 const listHelper = require('../utils/list_helper')
+//const User = require('../models/user')
 require('express-async-errors')
 
 
@@ -33,6 +34,8 @@ blogRouter.get('/:id', (request, response) => {
 blogRouter.post('/', async (request, response) => {
 	
 	const body = request.body
+	console.log('request.body: ', request.body.userId)
+	//const user = await User.findById(body)
 	let updatedbody = ''
 	if(body.likes === undefined){
 		body.likes = 0

@@ -37,11 +37,11 @@ describe('when there is initially one user in db', () => {
 		expect(usernames).toContain(newUser.username)
 	})
 
-	test('user is not created with too short password and username', async() => {
+	test('user should not be created with a password shorter then 3 symbols', async() => {
 		const usersAtStart = await helper.usersInDb()
-
+		console.log('users at start: ', usersAtStart)
 		const newUser = {
-			username: 'ml',
+			username: 'mluukkai',
 			name: 'Matti Luukkainen',
 			password: 'sa',
 		}
@@ -50,9 +50,30 @@ describe('when there is initially one user in db', () => {
 			
 
 		const usersAtEnd = await helper.usersInDb()
+		console.log('users at end: ', usersAtEnd)
+
 		expect(response.status).toBe(400)
-		expect(response.text).toContain('should be at least 3 characters long')
+		expect(response.text).toContain('too short')
 		expect(usersAtEnd).toHaveLength(usersAtStart.length)
 
+	})
+
+	test('username should be unique', async() => {
+		const usersAtStart = await helper.usersInDb()
+		const newUser = {
+			username: 'root',
+			name: 'Matti Luukkainen',
+			password: 'salainen',
+		}
+
+		const response = await api.post('/api/users').send(newUser)
+			
+
+		const usersAtEnd = await helper.usersInDb()
+		console.log('users at end: ', usersAtEnd)
+
+		expect(response.status).toBe(400)
+		expect(response.text).toContain('Username is not unique')
+		expect(usersAtEnd).toHaveLength(usersAtStart.length)
 	})
 })

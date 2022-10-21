@@ -5,10 +5,16 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    //"title": "aadfadsf",
+    "title": "aadfadsf",
     "author": "AntonAnton",
-    //"url": "blog.fi/anton/blog",
-    "likes": 3
+    "url": "blog.fi/anton/blog",
+    "likes": 3,
+    "user": {
+        "username": "mluikkai",
+        "password": "salainen",
+	    "name": "Matti Luukkainen"
+
+    }
 }
 
 ###
@@ -16,13 +22,16 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-	"username": "sa",
+	"username": "mluikka",
 	"name": "Matti Luukkainen",
 	"password": "sa"
 }
 
 ###
 
+DELETE http://localhost:3003/api/users
+
+###
 DELETE http://localhost:3003/api/blogs/632200a729f8ed2de170ee49
 
 ###
