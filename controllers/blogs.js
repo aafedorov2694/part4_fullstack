@@ -1,5 +1,6 @@
 const logger = require('../utils/logger')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const blogRouter = require('express').Router()
 const listHelper = require('../utils/list_helper')
 //const User = require('../models/user')
@@ -9,6 +10,7 @@ require('express-async-errors')
 blogRouter.get('/', (request, response) => {
 	Blog
 		.find({})
+		.populate('user')
 		.then(blogs => {
 			response.json(blogs)
 			logger.info(blogs)
@@ -32,30 +34,43 @@ blogRouter.get('/:id', (request, response) => {
 })
 
 blogRouter.post('/', async (request, response) => {
+	const user = (await User.find({}))[0]
 	
 	const body = request.body
-	console.log('request.body: ', request.body.userId)
-	//const user = await User.findById(body)
+	logger.info('user in blog: ', user)
 	let updatedbody = ''
 	if(body.likes === undefined){
 		body.likes = 0
 		updatedbody = body
+		
 	} else (
 		updatedbody = request.body
 	)
 	
 	const blog = new Blog(updatedbody)
+	logger.info('blog: ', blog)
+	user.blogs = user.blogs.concat(blog._id)
 	
-	blog
-		.save()
-		.then(result => {
-			body.title === undefined && body.url === undefined
-				? response.status(400).send({ message: 'BadRequest' })
-				:
-				response.status(201).json(result)
-			console.log('result: ', result)
-		})
-})
+	await user.save()
+	
+	const populating  = await blog.populate('user')
+	
+	console.log('populating: ', populating)
+
+	 /* try{
+		if(populating.title === undefined && populating.url === undefined){
+			response.status(400).send({ message: 'BadRequest' })
+		} else {
+			await populating.save()
+			response.status(201).json(populating)
+			logger.info(populating)
+		}	
+	} catch(exception) {
+		next(exception)
+	} */
+}
+)
+
 
 blogRouter.delete('/:id', async (request, response) => {
 	

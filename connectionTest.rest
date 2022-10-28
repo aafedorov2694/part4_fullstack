@@ -1,3 +1,5 @@
+//***BLOGS***//
+
 GET http://localhost:3003/api/blogs
 ###
 
@@ -5,31 +7,12 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "aadfadsf",
+    "title": "sdfsf",
     "author": "AntonAnton",
-    "url": "blog.fi/anton/blog",
-    "likes": 3,
-    "user": {
-        "username": "mluikkai",
-        "password": "salainen",
-	    "name": "Matti Luukkainen"
-
-    }
+    "url": "blog.fi/anton/blog"
+    
+    
 }
-
-###
-POST http://localhost:3003/api/users
-Content-Type: application/json
-
-{
-	"username": "mluikka",
-	"name": "Matti Luukkainen",
-	"password": "sa"
-}
-
-###
-
-DELETE http://localhost:3003/api/users
 
 ###
 DELETE http://localhost:3003/api/blogs/632200a729f8ed2de170ee49
@@ -37,7 +20,42 @@ DELETE http://localhost:3003/api/blogs/632200a729f8ed2de170ee49
 ###
 
 GET  http://localhost:3003/api/blogs/6322009c29f8ed2de170ee47
+PUT http://localhost:3003/api/blogs/63220159eec5e84525ed2a8f?likes=253
+
+//***USERS***//
+
+###
+GET http://localhost:3003/api/users
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+	"username": "tonko",
+	"name": "Anton Fed",
+	"password": "salainen"
+}
+
+
+//***LOGIN***//
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "tonko",
+    "password": "salainen"
+}
+
+
+
+
+//***OTHER***//
+###
+
+DELETE http://localhost:3003/api/users
+
+
 ###
 GET  http://localhost:3003/info
 ###
-PUT http://localhost:3003/api/blogs/63220159eec5e84525ed2a8f?likes=253
