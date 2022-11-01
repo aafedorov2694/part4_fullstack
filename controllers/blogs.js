@@ -3,6 +3,7 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const blogRouter = require('express').Router()
 const listHelper = require('../utils/list_helper')
+const jwt = require('jsonwebtoken')
 //const User = require('../models/user')
 require('express-async-errors')
 
@@ -33,15 +34,22 @@ blogRouter.get('/:id', (request, response) => {
         
 })
 
-blogRouter.post('/', async (request, response) => {
-	const user = (await User.find({}))[0]
+blogRouter.post('/', async (request, response, next) => {
 	
+	console.log('token: ', request.token)
 	const body = request.body
+	const decodedToken = jwt.verify(request.token, process.env.SECRET)
+	if (!decodedToken.id) {
+		return response.status(401).json({ error: 'token missing or invalid' })
+	}
+	console.log('decodedToken: ', decodedToken)
+	const user = await User.findById( decodedToken.id )
 	logger.info('user in blog: ', user)
 	let updatedbody = ''
 	if(body.likes === undefined){
 		body.likes = 0
 		updatedbody = body
+		body.user = user._id
 		
 	} else (
 		updatedbody = request.body
@@ -57,7 +65,7 @@ blogRouter.post('/', async (request, response) => {
 	
 	console.log('populating: ', populating)
 
-	 /* try{
+	try{
 		if(populating.title === undefined && populating.url === undefined){
 			response.status(400).send({ message: 'BadRequest' })
 		} else {
@@ -67,7 +75,7 @@ blogRouter.post('/', async (request, response) => {
 		}	
 	} catch(exception) {
 		next(exception)
-	} */
+	}
 }
 )
 

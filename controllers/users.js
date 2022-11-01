@@ -1,6 +1,4 @@
 const bcrypt = require('bcrypt')
-const { request } = require('../app')
-const blog = require('../models/blog')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const mongoose = require('mongoose')
@@ -18,7 +16,7 @@ usersRouter.get('/', async(request, response, next) => {
 		if(users){
 			response.status(200).json(users)
 		} else {
-			response.status(400).json({error: 'Did not manage to get users'})
+			response.status(400).json({ error: 'Did not manage to get users' })
 		}
 
 	} catch (exception) {

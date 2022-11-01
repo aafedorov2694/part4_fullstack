@@ -25,8 +25,23 @@ const errorHandler = (error, request, response, next) => {
 	next(error)
 }
 
+const tokenExtractor = (request, response, next) => {
+	
+	const authorization = request.get('authorization')
+	console.log('Middleware Authorization: ', authorization.substring(7))
+	if (authorization && authorization.toLowerCase().startsWith('bearer ')){
+		request.token = authorization.substring(7)
+	} else {
+		response.status(400).json({ error: 'Token is not valid' })
+	}
+
+	next()
+	
+
+}
 module.exports = {
 	requestLogger,
 	unknownEndpoint,
-	errorHandler
+	errorHandler,
+	tokenExtractor
 }
