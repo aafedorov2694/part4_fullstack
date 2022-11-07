@@ -38,24 +38,23 @@ blogRouter.post('/', async (request, response, next) => {
 	
 	console.log('token: ', request.token)
 	const body = request.body
-	const decodedToken = jwt.verify(request.token, process.env.SECRET)
+	/* const decodedToken = jwt.verify(request.token, process.env.SECRET)
 	if (!decodedToken.id) {
 		return response.status(401).json({ error: 'token missing or invalid' })
-	}
-	console.log('decodedToken: ', decodedToken)
-	const user = await User.findById( decodedToken.id )
+	} */
+	
+	const user = request.user
 	logger.info('user in blog: ', user)
-	let updatedbody = ''
+	
 	if(body.likes === undefined){
 		body.likes = 0
-		updatedbody = body
 		body.user = user._id
 		
-	} else (
-		updatedbody = request.body
-	)
+	} else {
+		body.user = user._id
+	}
 	
-	const blog = new Blog(updatedbody)
+	const blog = new Blog(body)
 	logger.info('blog: ', blog)
 	user.blogs = user.blogs.concat(blog._id)
 	
@@ -64,7 +63,7 @@ blogRouter.post('/', async (request, response, next) => {
 	const populating  = await blog.populate('user')
 	
 	console.log('populating: ', populating)
-
+ 
 	try{
 		if(populating.title === undefined && populating.url === undefined){
 			response.status(400).send({ message: 'BadRequest' })
@@ -80,18 +79,36 @@ blogRouter.post('/', async (request, response, next) => {
 )
 
 
-blogRouter.delete('/:id', async (request, response) => {
-	
+blogRouter.delete('/:id', async (request, response, next) => {
+	const token = request.token
 	const idToDelete = request.params.id
-	console.log('idTOdelete: ', idToDelete)
-	const blogToDelete =  await Blog.findByIdAndRemove(idToDelete)
-	if(blogToDelete){
-		response.status(200).end()
-		console.log('deleted')
+	const user = request.user
+	console.log('user: ', user)
 
-	}else{
-		response.status(404).send('smth went wrong')
+	
+	try{
+		const verification = await jwt.verify(token, process.env.SECRET)
+		const blog = await Blog.findById(idToDelete)
+		const userInBlog = await User.findById(blog.user.toString()) 
+		logger.info('user: ', user._id.toString(), 'verification: ', verification.id)
+		
+		if(user._id.toString() === userInBlog._id.toString()){
+			const blogToDelete = await Blog.findByIdAndRemove(idToDelete)
+			if(blogToDelete){
+				response.status(200).end()
+			} else {
+				response.status(400).json({ error: 'Blog is not found in the database' })
+			}
+		
+		} else {
+			response.status(401).json({ error: 'The user is not authorized to delete a blog, which was created by other user' })
+		}
+	} catch(ex){
+		next(ex)
 	}
+	
+ 
+	
 })
 
 blogRouter.put('/:id', async(request, response) => {

@@ -5,19 +5,20 @@ GET http://localhost:3003/api/blogs
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvc2hxIiwiaWQiOiI2MzYwNWNiNDRhYTUxMDMwOTU1M2FhYTciLCJpYXQiOjE2NjcyNTk2NjR9.xwrWTyHQLpNpCvi_j6dKhg6ucI8GWuwNxbPTzeBePnI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFudG9uRiIsImlkIjoiNjM2OTIzNzdhN2QyMGJkYWQ0MDljZjZkIiwiaWF0IjoxNjY3ODM0ODYyfQ.bbNu17QEq4sq1XnRJF3ANoilEVXv-Ef_b2Mu3nXtf8w
 
 {
-    "title": "Blogin",
-    "author": "NosikS",
-    "url": "blog.fi/anton/blog"
-    
-    
-    
+    "title": "Anna",
+    "author": "Anna",
+    "url": "blog.fi/anton/blog",
+    "likes": 6 
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/632200a729f8ed2de170ee49
+DELETE http://localhost:3003/api/blogs/636923c4a7d20bdad409cf72
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFudG9uRiIsImlkIjoiNjM2OTIzNzdhN2QyMGJkYWQ0MDljZjZkIiwiaWF0IjoxNjY3ODQzMDYwfQ.J69KZVM2HiwkvWJEhVHxPMdSHcZAeBUTWs_Ymc0OMrk
+
 
 ###
 
@@ -33,10 +34,20 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-	"username": "toshq",
-	"name": "Fedor Antonov",
-	"password": "salainenko"
+	"username": "AnnaG",
+	"name": "Anna Garkman",
+	"password": "salainenkof"
 }
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+	"username": "AntonF",
+	"name": "Anton Fedorov",
+	"password": "salainenkofski"
+}
+
 
 
 //***LOGIN***//
@@ -45,9 +56,19 @@ POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-    "username": "toshq",
-    "password": "salainenko"
+    "username": "AnnaG",
+    "password": "salainenkof"
 }
+####
+
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "AntonF",
+    "password": "salainenkofski"
+}
+
 
 
 

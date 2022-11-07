@@ -3,12 +3,7 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 const mongoose = require('mongoose')
 
-/* usersRouter.post('/', async (request, response) => {
-	await User
-		.find({})
-		
-})
- */
+
 usersRouter.get('/', async(request, response, next) => {
 	const users = await User.find({})
 	console.log('mongoose: ', mongoose.Schema.Types.ObjectId)
