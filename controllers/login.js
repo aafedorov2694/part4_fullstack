@@ -4,6 +4,7 @@ const loginRouter = require('express').Router()
 const User = require('../models/user')
 
 loginRouter.post('/', async (request, response) => {
+	console.log('login request: ', request.body)
 	const { username, password } = request.body
 
 	const user = await User.findOne({ username })
@@ -23,6 +24,7 @@ loginRouter.post('/', async (request, response) => {
 	}
 
 	const token = jwt.sign(userForToken, process.env.SECRET)
+	
 
 	response
 		.status(200)

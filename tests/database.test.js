@@ -86,16 +86,33 @@ test('new blog can be added to the DB', async() => {
 		likes: 3
 	}
 
+	const credentials = {
+		username: 'root',
+		password: 'sekret',
+	}
+
+	const login = await api.post('/api/login')
+		.send(credentials)
+	const fullToken = `Bearer ${login.body.token}`
+	console.log('fullToken: ', fullToken)
 	await api
 		.post('/api/blogs')
 		.send(testBlog)
+		.set('Authorization', fullToken)
 		.expect(201)
 		.expect('Content-Type', /application\/json/)
-	const response = await api.get('/api/blogs')
+		
+	const response = await api
+		.get('/api/blogs')
+		.set('Authorization', fullToken)
+		.expect(200)
+		.expect('Content-Type', /application\/json/)
+		
+	console.log('response body in test: ', response.body)
 	const content = response.body.map(blog => blog.title)
 	expect(response.body).toHaveLength(initialBlogs.length+1)
 	expect(content).toContain('BLogBlogBlog')
-
+ 
 })
 
 test('if likes property missing it has zero value in DB', async() => {

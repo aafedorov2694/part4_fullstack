@@ -76,4 +76,6 @@ describe('when there is initially one user in db', () => {
 		expect(response.text).toContain('Username is not unique')
 		expect(usersAtEnd).toHaveLength(usersAtStart.length)
 	})
+
+
 })

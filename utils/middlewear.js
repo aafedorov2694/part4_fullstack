@@ -54,15 +54,14 @@ const userExtractor = async (request, response, next) => {
 	try{
 		const verification = jwt.verify(authorization, process.env.SECRET)
 		request.user = await User.findById(verification.id)
-		
+		console.log('user: ', await User.findById(verification.id))
 	}catch(exception){
 		next(exception)
-		
 	}
 	
 	next()
-
 }
+
 module.exports = {
 	requestLogger,
 	unknownEndpoint,
